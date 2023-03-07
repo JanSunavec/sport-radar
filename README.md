@@ -1,12 +1,3 @@
-TODO
-
-3. Lint for for commit 
-4. Lint + test for push
-5. Set up GitHub hooks. 
-6. Create branch. No master.
-7. Dva PR. Jeden init project a druhy len applikacia samotna.
-
-
 Simple Sport Radar example. Library only. So no start script.
 
 ## Setup
