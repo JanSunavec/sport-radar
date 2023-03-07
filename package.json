@@ -2,8 +2,13 @@
   "name": "live-score",
   "version": "1.0.0",
   "description": "",
-  "main": "",
+  "main": "index.ts",
   "scripts": {
+    "build": "tsc --build",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint ./src ./test"
   },
   "author": "JS",
   "license": "ISC",
@@ -24,6 +29,8 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
+    "ts-node": "^10.9.1",
+    "uuid": "^9.0.0"
   },
   "jest": {
     "collectCoverageFrom": [
