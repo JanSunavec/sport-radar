@@ -65,6 +65,49 @@ describe("addGame", () => {
     const games = listingGames();
     expect(games.length).toBe(1);
   });
+
+  it("should create team with diacritics", () => {
+    const res = addGame("áčš", "ŽÚÍ");
+    expect(res.resultCode).toBe(addGameResultCode.GAME_ADDED);
+    const games = listingGames();
+    expect(games.length).toBe(1);
+    expect(games[0].teamA.title).toBe("áčš");
+    expect(games[0].teamB.title).toBe("ŽÚÍ");
+  });
+
+  it("should return error when team A has empty name", () => {
+    const res = addGame("", "rty");
+    expect(res.resultCode).toBe(addGameResultCode.ERROR_EMPTY_TEAM_A_NAME);
+    const games = listingGames();
+    expect(games.length).toBe(0);
+  });
+
+  it("should return error when team B has empty name", () => {
+    const res = addGame("asd", "");
+    expect(res.resultCode).toBe(addGameResultCode.ERROR_EMPTY_TEAM_B_NAME);
+    const games = listingGames();
+    expect(games.length).toBe(0);
+  });
+
+  it("should create team with special characters", () => {
+    const res = addGame("!@#$%^&", "*#%^&#");
+    expect(res.resultCode).toBe(addGameResultCode.GAME_ADDED);
+    const games = listingGames();
+    expect(games.length).toBe(1);
+    expect(games[0].teamA.title).toBe("!@#$%^&");
+    expect(games[0].teamB.title).toBe("*#%^&#");
+  });
+
+  it("should create team with long names (including spaces)", () => {
+    const teamAtitle = "asdf as fdas fdasd fsafd safdsad f safd dsafa sdf saf";
+    const teamBtitle = "asfd asdf sa fdsadf sadf asfd safd";
+    const res = addGame(teamAtitle, teamBtitle);
+    expect(res.resultCode).toBe(addGameResultCode.GAME_ADDED);
+    const games = listingGames();
+    expect(games.length).toBe(1);
+    expect(games[0].teamA.title).toBe(teamAtitle);
+    expect(games[0].teamB.title).toBe(teamBtitle);
+  });
 });
 
 describe("updateScore", () => {
@@ -139,11 +182,13 @@ describe("removeGame", () => {
   });
 
   it("should remove game properly", () => {
+    const res2 = addGame("zxc", "cvb");
     const res = addGame("asd", "qwe");
     const res1 = removeGame(res.id as string);
     expect(res1).toBe(removeGameResult.GAME_REMOVED);
     const games = listingGames();
-    expect(games.length).toBe(0);
+    expect(games.length).toBe(1);
+    expect(games[0].id).toBe(res2.id);
   });
 
   it("should failed remove because wrong game ID", () => {

@@ -16,6 +16,8 @@ export enum addGameResultCode {
   GAME_ADDED = 1,
   ERROR_TEAM_A_ALREADY_EXISTS = -1,
   ERROR_TEAM_B_ALREADY_EXISTS = -2,
+  ERROR_EMPTY_TEAM_A_NAME = -3,
+  ERROR_EMPTY_TEAM_B_NAME = -4,
 }
 
 export interface addGameResult {
@@ -45,6 +47,14 @@ export function cleanGames(): boolean {
 }
 
 export function addGame(TeamA: string, TeamB: string): addGameResult {
+  if (TeamA.length === 0) {
+    return { resultCode: addGameResultCode.ERROR_EMPTY_TEAM_A_NAME };
+  }
+
+  if (TeamB.length === 0) {
+    return { resultCode: addGameResultCode.ERROR_EMPTY_TEAM_B_NAME };
+  }
+
   const teamAExists = Games.findIndex(
     (game) => game.teamA.title === TeamA || game.teamB.title === TeamA
   );
